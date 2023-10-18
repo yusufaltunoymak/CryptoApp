@@ -3,6 +3,7 @@ package com.example.cryptoapp.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.databinding.RecyclerRowBinding
 import com.example.cryptoapp.model.home.Data
@@ -28,6 +29,10 @@ class HomeRecyclerAdapter(private var coinList: List<Data>) : RecyclerView.Adapt
             }
             binding.root.setOnClickListener {
                 onItemClickListener.invoke(coin)
+                if(coin.symbol != null) {
+                    val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(coin.symbol)
+                    Navigation.findNavController(binding.root).navigate(action)
+                }
             }
         }
     }
