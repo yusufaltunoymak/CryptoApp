@@ -8,5 +8,7 @@ data class Quote(
     val bTC: BTC?,
     @SerializedName("ETH")
     val eTH: ETH?,
+    @SerializedName("USD")
+    val uSD: USD?
 
 )

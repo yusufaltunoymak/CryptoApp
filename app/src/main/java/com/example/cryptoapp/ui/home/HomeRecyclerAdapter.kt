@@ -1,13 +1,12 @@
 package com.example.cryptoapp.ui.home
 
-import android.content.Context
-import android.util.Log
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.databinding.RecyclerRowBinding
 import com.example.cryptoapp.model.home.Data
+import com.example.cryptoapp.util.loadImage
 
 
 class HomeRecyclerAdapter(private var coinList: List<Data>) : RecyclerView.Adapter<HomeRecyclerAdapter.ViewHolder>() {
@@ -20,6 +19,11 @@ class HomeRecyclerAdapter(private var coinList: List<Data>) : RecyclerView.Adapt
             binding.apply {
                 tvRowTitle.text = coin.name
                 tvRowSymbol.text = coin.symbol
+                val imageUrl = "${coin.id}.png"
+                //https://s2.coinmarketcap.com/static/img/coins/64x64/$coinImage.png
+                ivRowImage.loadImage(imageUrl)
+                tvRowValue.text = coin.quote?.uSD?.price.toString()
+
 
             }
             binding.root.setOnClickListener {

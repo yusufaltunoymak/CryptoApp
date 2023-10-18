@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment() : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     FragmentHomeBinding::inflate
 ) {
-    private lateinit var adapters: HomeRecyclerAdapter
+    private lateinit var cryptoAdapter: HomeRecyclerAdapter
 
     override val viewModel by viewModels<HomeViewModel>()
     override fun onCreatedFinished() {
@@ -34,13 +34,13 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     }
 
     override fun observeEvents() {
-        viewModel.cryptoResponse.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.cryptoResponse.observe(viewLifecycleOwner) { response ->
             response?.data.let { data ->
-                adapters = HomeRecyclerAdapter(data as List<Data>)
-                binding.rvHome.adapter = adapters
+                cryptoAdapter = HomeRecyclerAdapter(data as List<Data>)
+                binding.rvHome.adapter = cryptoAdapter
                 setAdapters()
             }
-        })
+        }
 
         viewModel.isLoading.observe(viewLifecycleOwner){
             isLoadingHandle(it)
@@ -56,7 +56,7 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding, HomeViewModel>(
         binding.rvHome.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            adapter = adapters
+            adapter = cryptoAdapter
         }
     }
 
