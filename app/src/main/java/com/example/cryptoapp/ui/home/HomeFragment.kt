@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptoapp.base.BaseFragment
 import com.example.cryptoapp.databinding.FragmentHomeBinding
-import com.example.cryptoapp.model.home.Data
 import com.example.cryptoapp.util.Constants.API_KEY
 import com.example.cryptoapp.util.Constants.LIMIT
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,6 +16,7 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     FragmentHomeBinding::inflate
 ) {
     private lateinit var cryptoAdapter: HomeRecyclerAdapter
+
 
     override val viewModel by viewModels<HomeViewModel>()
     override fun onCreatedFinished() {
@@ -36,9 +35,12 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding, HomeViewModel>(
     override fun observeEvents() {
         viewModel.cryptoResponse.observe(viewLifecycleOwner) { response ->
             response?.data.let { data ->
-                cryptoAdapter = HomeRecyclerAdapter(data as List<Data>)
+                cryptoAdapter = HomeRecyclerAdapter()
                 binding.rvHome.adapter = cryptoAdapter
                 setAdapters()
+                viewModel.cryptoModel.observe(viewLifecycleOwner) {
+                    cryptoAdapter.submitData(viewLifecycleOwner.lifecycle,it)
+                }
             }
         }
 
